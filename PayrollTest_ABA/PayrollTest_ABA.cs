@@ -65,7 +65,7 @@ namespace PayrollTest_ABA
         public void TestAddCommissionedEmployee()
         {
             int empId = 5;
-            AddCommissionedEmployee t = new AddCommissionedEmployee(empId, "Bob", "Home", 100.00, 1000.00);
+            AddCommissionedEmployee t = new AddCommissionedEmployee(empId, "Bob", "Home", 1000.00, 70.00);
             t.Execute();
             Employee e = PayrollDatabase.GetEmployee(empId);
             Assert.AreEqual("Bob", e.Name);
@@ -73,7 +73,7 @@ namespace PayrollTest_ABA
             Assert.IsTrue(pc is CommissionedClassification);
             CommissionedClassification sc = pc as CommissionedClassification;
             Assert.AreEqual(1000.00, sc.Salary, .001);
-            Assert.AreEqual(100.00, sc.CommissionRate, .001);
+            Assert.AreEqual(70.00, sc.CommissionRate, .001);
             PaymentSchedule ps = e.Schedule;
             Assert.IsTrue(ps is BiweeklySchedule);
             PaymentMethod pm = e.Method;
