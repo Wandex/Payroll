@@ -148,5 +148,37 @@ namespace PayrollTest_ABA
             Assert.IsNotNull(sc);
             Assert.AreEqual(12.95, sc.Charge, .001);
         }
+
+        [TestMethod]
+        public void TestChangeNameTransaction()
+        {
+            int empId = 10;
+            AddHourlyEmployee t = new AddHourlyEmployee(empId, "Bill", "Home", 15.25);
+            t.Execute();
+            ChangeNameTransaction cnt = new ChangeNameTransaction(empId, "Bob");
+            cnt.Execute();
+            Employee e = PayrollDatabase.GetEmployee(empId);
+            Assert.IsNotNull(e);
+            Assert.AreEqual("Bob", e.Name);
+        }
+
+        [TestMethod]
+        public void ChangeHourlyTransaction()
+        {
+            int empId = 11;
+            AddCommissionedEmployee t = new AddCommissionedEmployee(empId, "Lance", "Home", 2500, 3.2);
+            t.Execute();
+            ChangeHourlyTransaction cht = new ChangeHourlyTransaction(empId, 27.52);
+            cht.Execute();
+            Employee e = PayrollDatabase.GetEmployee(empId);
+            Assert.IsNotNull(e);
+            PaymentClassification pc = e.Classification;
+            Assert.IsNotNull(pc);
+            Assert.IsTrue(pc is HourlyClassification);
+            HourlyClassification hc = pc as HourlyClassification;
+            Assert.AreEqual(27.52, hc.HourlyRate, .001);
+            PaymentSchedule ps = e.Schedule;
+            Assert.IsTrue(ps is WeeklySchedule);
+        }
     }
 }

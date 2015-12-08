@@ -57,6 +57,7 @@ namespace Payroll_ABA
         public string Address
         {
             get { return address; }
+            set { address = value; }
         }
 
         public int EmpId
